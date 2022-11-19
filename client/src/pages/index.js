@@ -1,0 +1,6 @@
+export { default as HomePage } from "./HomePage";
+export { default as ChangePassword } from "./ChangePassword";
+export { default as LogOutPage } from "./LogOutPage";
+export { default as LoginPage } from "./LoginPage";
+export { default as RegisterPage } from "./RegisterPage";
+export { default as NotFoundPage } from "./NotFoundPage";
