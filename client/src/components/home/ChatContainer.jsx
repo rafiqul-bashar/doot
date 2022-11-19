@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import MessageSend from "../chatContainer/MessageSend";
 import WelcomeText from "../chatContainer/WelcomeText";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:5000");
+
 const MessageComponent = ({ self, message }) => {
   return (
     <div
@@ -15,56 +19,6 @@ const MessageComponent = ({ self, message }) => {
     </div>
   );
 };
-const messages = [
-  {
-    self: true,
-    message: "Hello",
-  },
-  {
-    self: false,
-    message: "Hi",
-  },
-  {
-    self: true,
-    message: "Can i have a moment?",
-  },
-  {
-    self: false,
-    message: "Yes ,of course",
-  },
-  {
-    self: false,
-    message: "What do want to know?",
-  },
-  {
-    self: true,
-    message: "Can you lend me some money?",
-  },
-  {
-    self: true,
-    message: "Hello",
-  },
-  {
-    self: false,
-    message: "Hi",
-  },
-  {
-    self: true,
-    message: "Can i have a moment?",
-  },
-  {
-    self: false,
-    message: "Yes ,of course",
-  },
-  {
-    self: false,
-    message: "What do want to know?",
-  },
-  {
-    self: true,
-    message: "Can you lend me some money?",
-  },
-];
 
 export default function ChatContainer({
   setChatOpen,
@@ -72,12 +26,18 @@ export default function ChatContainer({
   currentChat,
   setCurrentChat,
 }) {
-  if (!chatOpen) return <WelcomeText />;
+  const [chats, setChats] = useState([]);
   const backBtn = () => {
     setCurrentChat("");
     setChatOpen(false);
   };
-
+  useEffect(() => {
+    socket.on("chat", (payload) => {
+      setChats([...chats, payload]);
+    });
+  }, []);
+  console.log(chats);
+  if (!chatOpen) return <WelcomeText />;
   return (
     <div className="h-full w-full bg-[#F3F2F3] text-[#5B6167] dark:text-[#ADB5BD] dark:bg-[#2F2F2E]">
       <div className="chatheader  h-[10vh] px-6 flex items-center gap-8">
@@ -89,10 +49,10 @@ export default function ChatContainer({
       </div>
       <div className="bg-gray-200 dark:bg-[#444444] h-[80vh] w-full p-6 overflow-auto">
         <div className="flex flex-col gap-4 ">
-          {messages.map((message, i) => (
+          {chats?.map((message, i) => (
             <MessageComponent
               key={i}
-              self={message.self}
+              self={message.uid === "uUak" ? true : false}
               message={message.message}
             />
           ))}

@@ -1,54 +1,7 @@
 import React from "react";
 import { AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
+import { contacts } from "../../staticInfos";
 
-const chats = [
-  {
-    name: "1 Rafiqul Bashar",
-    img: "/auth-img.png",
-  },
-  {
-    name: "2 Rafiqul Bashar",
-    img: "/auth-img.png",
-  },
-  {
-    name: "3 Rafiqul Bashar",
-    img: "/auth-img.png",
-  },
-  {
-    name: "Rafiqul Bashar",
-    img: "/auth-img.png",
-  },
-  {
-    name: "Rafiqul Bashar",
-    img: "/auth-img.png",
-  },
-  {
-    name: "Last er Ager Bhai ",
-    img: "/auth-img.png",
-  },
-  {
-    name: "Last Bhai",
-    img: "/auth-img.png",
-  },
-];
-const chats3 = [
-  {
-    name: "Promnai",
-    img: "/auth-img.png",
-  },
-  {
-    name: "Aro ase to",
-    img: "/auth-img.png",
-  },
-  {
-    name: " Thikase Bhai",
-    img: "/auth-img.png",
-  },
-  {
-    name: "Rafiqul Bashar",
-    img: "/auth-img.png",
-  },
-];
 export default function Contacts({ handleCurrentChat, currentChat }) {
   return (
     <div className="h-screen p-6  dark:bg-[#262626] ">
@@ -74,7 +27,7 @@ export default function Contacts({ handleCurrentChat, currentChat }) {
       <div className="h-[80vh] py-8 overflow-auto scrollbar-thin scrollbar-thumb-gray-400">
         <div className="flex flex-col gap-4">
           <h2 className="mt-4">All Contacts</h2>
-          {chats.map((el, i) => (
+          {contacts?.map((el, i) => (
             <div
               onClick={() => handleCurrentChat(el.name)}
               key={i}

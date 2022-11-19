@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
+import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
 import {
   MobileNavbar,
@@ -9,6 +11,10 @@ import {
   ChatContainer,
   DesktopNavbar,
 } from "../components";
+
+// socket stuffs here
+
+const socket = io("http://localhost:5000");
 
 export default function HomePage({ user = true, theme, switchTheme }) {
   const [pageContents, setPageContents] = useState("Chats");
