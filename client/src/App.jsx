@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import Redirect from "./components/Redirtect";
 import {
   ChangePassword,
@@ -9,10 +10,11 @@ import {
   NotFoundPage,
   RegisterPage,
 } from "./pages";
+import { userInfo } from "./recoil/userState";
 
 function App() {
   const [theme, setTheme] = useState(null);
-
+  const user = useRecoilValue(userInfo);
   useEffect(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setTheme("dark");
@@ -20,7 +22,7 @@ function App() {
       setTheme("light");
     }
   }, []);
-
+  console.log(user);
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");

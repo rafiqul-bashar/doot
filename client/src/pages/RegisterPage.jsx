@@ -1,12 +1,28 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
+import { userState } from "../recoil/userState";
+import { baseUrl } from "../requests";
 export default function RegisterPage() {
   const [email, setEmail] = useState("demo@mail.com");
   const [userName, setUserName] = useState("guestUser");
   const [password, setPassword] = useState("demo1234");
-  const handleRegister = () => {
-    console.log({ email, userName, password });
+  const [user, setUser] = useRecoilState(userState);
+  const handleRegister = async () => {
+    console.log(email, userName, password);
+    const { data } = await axios.post(`${baseUrl}/auth/register`, {
+      email,
+      userName,
+      password,
+    });
+    setUser(data);
   };
   return (
     <div className={styles.pageContainer}>

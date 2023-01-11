@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+import { baseUrl } from "../requests";
 export default function LoginPage() {
   const [userName, setUserName] = useState("demo@mail.com");
   const [password, setPassword] = useState("demo1234");
   const handleLogin = () => {
     console.log({ userName, password });
+    axios.post(`${baseUrl}/login`, { email: userName, password });
   };
 
   return (

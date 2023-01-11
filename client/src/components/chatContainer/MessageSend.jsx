@@ -4,20 +4,35 @@ import { AiOutlineSend } from "react-icons/ai";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import io from "socket.io-client";
-
+import Picker from "emoji-picker-react";
 const socket = io("http://localhost:5000");
 
 export default function MessageSend() {
   const [message, setMessage] = useState("");
-  const uid = nanoid(4);
-  const sendMessage = () => {
-    socket.emit("chat", { message, uid });
-    setMessage("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const handleEmojiPickerhideShow = () => {
+    setShowEmojiPicker(!showEmojiPicker);
   };
+  const handleEmojiClick = (event, emojiObject) => {
+    console.log(emojiObject);
+    let msg = message;
+    msg += emojiObject.emoji;
+    setMessage(msg);
+  };
+  // const sendMessage = () => {
+  //   socket.emit("chat", { message, uid });
+  //   setMessage("");
+  // };
   return (
     <div className="flex items-center gap-4 py-4 px-8">
       <div className="grow-0 ">
-        <GrEmoji className="w-10 h-10" />
+        <GrEmoji onClick={handleEmojiPickerhideShow} className="w-10 h-10" />
+        {showEmojiPicker && (
+          <div className="z-10 absolute bottom-12">
+            {" "}
+            <Picker onEmojiClick={handleEmojiClick} />{" "}
+          </div>
+        )}
       </div>
       <input
         value={message}
