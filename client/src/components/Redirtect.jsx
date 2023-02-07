@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { userInfo } from "../recoil/userState";
 
 export default function Redirect({ children }) {
-  let user = false;
-  // const user = useRecoilValue(userInfo);
-  if (!user) {
-    return children;
+  const { userToken } = useSelector((state) => state.auth);
+  if (!userToken) {
+    return <Navigate to={"/auth-login"} replace />;
   }
-
-  return <Navigate to={"/"} />;
+  return children;
 }

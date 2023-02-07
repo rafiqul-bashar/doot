@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import MessageSend from "../chatContainer/MessageSend";
 import WelcomeText from "../chatContainer/WelcomeText";
-import io from "socket.io-client";
-
-const socket = io("http://localhost:5000");
 
 const MessageComponent = ({ self, message }) => {
   return (
@@ -31,11 +28,7 @@ export default function ChatContainer({
     setCurrentChat("");
     setChatOpen(false);
   };
-  useEffect(() => {
-    socket.on("chat", (payload) => {
-      setChats([...chats, payload]);
-    });
-  }, []);
+
   console.log(chats);
   if (!chatOpen) return <WelcomeText />;
   return (

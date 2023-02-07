@@ -1,29 +1,33 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
-import { userState } from "../recoil/userState";
-import { baseUrl } from "../requests";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../store/reducers/authActions";
+
 export default function RegisterPage() {
   const [email, setEmail] = useState("demo@mail.com");
-  const [userName, setUserName] = useState("guestUser");
+  const [fullName, setFullName] = useState("guestUser");
   const [password, setPassword] = useState("demo1234");
-  const [user, setUser] = useRecoilState(userState);
+  const navigate = useNavigate();
+  const { loading, userInfo, error, success } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
   const handleRegister = async () => {
-    console.log(email, userName, password);
-    const { data } = await axios.post(`${baseUrl}/auth/register`, {
-      email,
-      userName,
-      password,
-    });
-    setUser(data);
+    dispatch(registerUser({ fullName, email, password }));
   };
+
+  useEffect(() => {
+    // redirect authenticated user to profile screen
+    if (success) navigate("/auth-login");
+  }, [navigate, userInfo, success]);
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen text-center text-violet-500 text-3xl">
+        Loading .....
+      </div>
+    );
+  }
   return (
     <div className={styles.pageContainer}>
       <img
@@ -53,11 +57,11 @@ export default function RegisterPage() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
             />
-            <label className="text-gray-600 font-normal">Username</label>
+            <label className="text-gray-600 font-normal">Fullname</label>
             <input
               className={styles.input}
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               type="text"
             />
             <label className="text-gray-600 font-normal">Password</label>
@@ -76,6 +80,9 @@ export default function RegisterPage() {
                 placeholder="admin"
               />
               <label className="text-gray-600 font-normal">Remember Me</label>
+            </div>
+            <div>
+              <h2 className="text-red-400">{error}</h2>
             </div>
             <button onClick={handleRegister} className={styles.button}>
               Register

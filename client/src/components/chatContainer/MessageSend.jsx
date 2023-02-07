@@ -2,10 +2,8 @@ import React from "react";
 import { GrEmoji } from "react-icons/gr";
 import { AiOutlineSend } from "react-icons/ai";
 import { useState } from "react";
-import { nanoid } from "nanoid";
-import io from "socket.io-client";
+
 import Picker from "emoji-picker-react";
-const socket = io("http://localhost:5000");
 
 export default function MessageSend() {
   const [message, setMessage] = useState("");

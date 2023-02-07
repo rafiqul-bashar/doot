@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+
 import Redirect from "./components/Redirtect";
 import {
   ChangePassword,
@@ -10,11 +10,10 @@ import {
   NotFoundPage,
   RegisterPage,
 } from "./pages";
-import { userInfo } from "./recoil/userState";
 
 function App() {
   const [theme, setTheme] = useState(null);
-  const user = useRecoilValue(userInfo);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setTheme("dark");
@@ -22,7 +21,7 @@ function App() {
       setTheme("light");
     }
   }, []);
-  console.log(user);
+
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -40,43 +39,17 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<HomePage theme={theme} switchTheme={switchTheme} />}
+          element={
+            <Redirect>
+              <HomePage theme={theme} switchTheme={switchTheme} />
+            </Redirect>
+          }
         />
 
-        <Route
-          path="/auth-login"
-          element={
-            <Redirect>
-              <LoginPage />
-            </Redirect>
-          }
-        />
-        <Route
-          path="/auth-register"
-          element={
-            <Redirect>
-              <RegisterPage />
-            </Redirect>
-          }
-        />
-        <Route
-          path="/auth-changepassword"
-          element={
-            <Redirect>
-              {" "}
-              <ChangePassword />{" "}
-            </Redirect>
-          }
-        />
-        <Route
-          path="/logout"
-          element={
-            <Redirect>
-              {" "}
-              <LogOutPage />
-            </Redirect>
-          }
-        />
+        <Route path="/auth-login" element={<LoginPage />} />
+        <Route path="/auth-register" element={<RegisterPage />} />
+        <Route path="/auth-changepassword" element={<ChangePassword />} />
+        <Route path="/logout" element={<LogOutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { baseUrl } from "../requests";
+import { useNavigate } from "react-router-dom";
+import { userLogin } from "../../store/reducers/authActions";
 export default function LoginPage() {
   const [userName, setUserName] = useState("demo@mail.com");
   const [password, setPassword] = useState("demo1234");
+  const { loading, userInfo, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (userInfo) {
+      navigate("/profile");
+    }
+  }, [navigate, userInfo]);
   const handleLogin = () => {
-    console.log({ userName, password });
-    axios.post(`${baseUrl}/login`, { email: userName, password });
+    dispatch(userLogin({ email: userName, password }));
   };
 
   return (
